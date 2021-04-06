@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">LightWeather</string>
+    <string name="app_name">Light Weather</string>
+
+    <string name="more_action_description">More action</string>
+    <string name="add_city_description">Add a city</string>
+    <string name="add_city">Add City</string>
+    <string name="about_description">about this app</string>
+    <string name="about">About</string>
+    <string name="settings">Settings</string>
 </resources>
