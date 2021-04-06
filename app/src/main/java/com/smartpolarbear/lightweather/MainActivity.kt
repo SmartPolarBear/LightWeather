@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -27,6 +28,8 @@ import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 
 class MainActivity : ComponentActivity() {
+
+    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -43,6 +46,7 @@ sealed class MainScreen(val route: String, @StringRes val nameResourceId: Int) {
     object About : MainScreen("about", R.string.settings)
 }
 
+@ExperimentalAnimationApi
 @Composable
 fun Main() {
     val navController = rememberNavController();
@@ -52,11 +56,38 @@ fun Main() {
         content = {
             NavHost(navController = navController, startDestination = "weather")
             {
-                composable(MainScreen.Weather.route) { Text(text = "weather") }
-                composable(MainScreen.Settings.route) { Text(text = "settings") }
-                composable(MainScreen.About.route) { Text(text = "about") }
+                composable(MainScreen.Weather.route)
+                {
+                    EntranceAnimation { Text(text = "weather") }
+                }
+                composable(MainScreen.Settings.route)
+                {
+                    EntranceAnimation { Text(text = "settings") }
+                }
+                composable(MainScreen.About.route)
+                {
+                    EntranceAnimation { Text(text = "about") }
+                }
             }
         })
+}
+
+@ExperimentalAnimationApi
+@Composable
+fun EntranceAnimation(content: @Composable () -> Unit) {
+    AnimatedVisibility(
+        initiallyVisible = false,
+        visible = true,
+
+        content = content,
+
+        enter = slideInVertically(initialOffsetY = { -40 })
+                + expandVertically(expandFrom = Alignment.Top)
+                + fadeIn(initialAlpha = 0.3f),
+        exit = slideOutVertically()
+                + shrinkVertically()
+                + fadeOut()
+    )
 }
 
 @Composable
@@ -135,6 +166,7 @@ fun MainFloatingActionButton(navController: NavController) {
     }
 }
 
+@ExperimentalAnimationApi
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
