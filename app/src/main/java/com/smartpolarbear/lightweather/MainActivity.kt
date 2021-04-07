@@ -26,6 +26,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
+import com.smartpolarbear.lightweather.ui.settings.Settings
 
 class MainActivity : ComponentActivity() {
 
@@ -52,42 +53,25 @@ fun Main() {
     val navController = rememberNavController();
 
     Scaffold(topBar = { MainTopBar(navController) },
-        floatingActionButton = { MainFloatingActionButton(navController) },
-        content = {
-            NavHost(navController = navController, startDestination = "weather")
+        floatingActionButton = { MainFloatingActionButton(navController) })
+    {
+        NavHost(
+            navController = navController,
+            startDestination = MainScreen.Weather.route
+        )
+        {
+            composable(MainScreen.Weather.route)
             {
-                composable(MainScreen.Weather.route)
-                {
-                    EntranceAnimation { Text(text = "weather") }
-                }
-                composable(MainScreen.Settings.route)
-                {
-                    EntranceAnimation { Text(text = "settings") }
-                }
-                composable(MainScreen.About.route)
-                {
-                    EntranceAnimation { Text(text = "about") }
-                }
             }
-        })
-}
-
-@ExperimentalAnimationApi
-@Composable
-fun EntranceAnimation(content: @Composable () -> Unit) {
-    AnimatedVisibility(
-        initiallyVisible = false,
-        visible = true,
-
-        content = content,
-
-        enter = slideInVertically(initialOffsetY = { -40 })
-                + expandVertically(expandFrom = Alignment.Top)
-                + fadeIn(initialAlpha = 0.3f),
-        exit = slideOutVertically()
-                + shrinkVertically()
-                + fadeOut()
-    )
+            composable(MainScreen.Settings.route)
+            {
+                Settings(navController)
+            }
+            composable(MainScreen.About.route)
+            {
+            }
+        }
+    }
 }
 
 @Composable
