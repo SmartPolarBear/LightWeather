@@ -26,6 +26,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
+import com.smartpolarbear.lightweather.Main
+import com.smartpolarbear.lightweather.R
 
 import com.smartpolarbear.lightweather.ui.animation.ScreenSwitchAnimation
 
@@ -38,6 +40,42 @@ public fun Settings(navController: NavController) {
 }
 
 @Composable
+fun SettingItem(
+    title: String,
+    description: String?,
+    checked: Boolean,
+    onCheckedChange: ((Boolean) -> Unit)?
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column() {
+            Text(text = title)
+            Text(text = description ?: "")
+        }
+        Box(contentAlignment = Alignment.CenterEnd)
+        {
+            Switch(
+                checked = checked,
+                onCheckedChange = onCheckedChange,
+            )
+        }
+    }
+}
+
+@Composable
 fun SettingList() {
-    Text(text = "settings!")
+    Column(modifier = Modifier.fillMaxWidth()) {
+        SettingItem("Test", "test", true, {});
+    }
+}
+
+@ExperimentalAnimationApi
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    SettingList()
 }
