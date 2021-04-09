@@ -8,7 +8,7 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -21,11 +21,10 @@ import androidx.compose.ui.unit.dp
 import com.smartpolarbear.lightweather.ui.theme.LightWeatherTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigate
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.*
 import com.smartpolarbear.lightweather.ui.settings.Settings
 
 class MainActivity : ComponentActivity() {
@@ -41,10 +40,15 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-sealed class MainScreen(val route: String, @StringRes val nameResourceId: Int) {
-    object Weather : MainScreen("weather", R.string.app_name)
-    object Settings : MainScreen("settings", R.string.settings)
-    object About : MainScreen("about", R.string.settings)
+sealed class MainScreen(
+    val route: String,
+    @StringRes val nameResourceId: Int,
+    val imageVector: ImageVector
+) {
+    object AllWeathers : MainScreen("all_weather", R.string.app_name, Icons.Filled.LocationCity)
+    object CurrentLocation : MainScreen("current", R.string.app_name, Icons.Filled.MyLocation)
+    object Settings : MainScreen("settings", R.string.settings, Icons.Filled.Settings)
+    object About : MainScreen("about", R.string.about, Icons.Filled.Info)
 }
 
 @ExperimentalAnimationApi
@@ -53,14 +57,18 @@ fun Main() {
     val navController = rememberNavController();
 
     Scaffold(topBar = { MainTopBar(navController) },
+        bottomBar = { MainBottomNavigation(navController) },
         floatingActionButton = { MainFloatingActionButton(navController) })
     {
         NavHost(
             navController = navController,
-            startDestination = MainScreen.Weather.route
+            startDestination = MainScreen.AllWeathers.route
         )
         {
-            composable(MainScreen.Weather.route)
+            composable(MainScreen.AllWeathers.route)
+            {
+            }
+            composable(MainScreen.CurrentLocation.route)
             {
             }
             composable(MainScreen.Settings.route)
@@ -72,6 +80,34 @@ fun Main() {
             }
         }
     }
+}
+
+@Composable
+fun MainBottomNavigation(navController: NavHostController) {
+    BottomNavigation() {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
+
+        listOf(
+            MainScreen.AllWeathers,
+            MainScreen.CurrentLocation,
+            MainScreen.Settings
+        ).forEach { screen ->
+            BottomNavigationItem(
+                icon = { Icon(imageVector = screen.imageVector, contentDescription = "") },
+                label = { Text(text = stringResource(id = screen.nameResourceId)) },
+                selected = currentRoute == screen.route,
+                onClick = {
+                    navController.navigate(MainScreen.About.route)
+                    {
+                        popUpTo = navController.graph.startDestination
+                        launchSingleTop = true
+                    }
+                })
+        }
+    }
+
+
 }
 
 @Composable
