@@ -7,6 +7,8 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -14,6 +16,7 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,14 +31,11 @@ import com.smartpolarbear.lightweather.R
 
 import com.smartpolarbear.lightweather.ui.animation.ScreenSwitchAnimation
 
-@ExperimentalAnimationApi
-@Composable
-public fun Settings(navController: NavController) {
-    ScreenSwitchAnimation() {
-        SettingList()
-    }
-}
-
+/**
+ * A setting item in the list
+ * @param title The Title of the setting item
+ * @param description small description under the title
+ */
 @Composable
 fun SettingItem(
     title: String,
@@ -43,7 +43,6 @@ fun SettingItem(
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit)?
 ) {
-
     Row(
         modifier = Modifier
             .clickable(onClick = {
@@ -52,7 +51,7 @@ fun SettingItem(
                 }
             })
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(dimensionResource(id = R.dimen.small_padding)),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -72,12 +71,23 @@ fun SettingItem(
     }
 }
 
+@ExperimentalAnimationApi
+@Composable
+public fun Settings(navController: NavController) {
+    ScreenSwitchAnimation() {
+        SettingList()
+    }
+}
+
+
 @Composable
 fun SettingList() {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        var checked by remember { mutableStateOf(false) }
-        SettingItem("Test", "This is a test", checked) {
-            checked = !checked
+    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        item {
+            var checked by remember { mutableStateOf(false) }
+            SettingItem("Test", "This is a test", checked) {
+                checked = !checked
+            }
         }
     }
 }
