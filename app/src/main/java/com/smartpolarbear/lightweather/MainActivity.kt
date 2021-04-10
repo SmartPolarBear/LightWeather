@@ -153,6 +153,7 @@ fun MainTopBarMenuItems(navController: NavController, onItemClick: () -> Unit) {
                 text = stringResource(R.string.settings),
             )
         }
+
         DropdownMenuItem(onClick = {
             onItemClick()
 
