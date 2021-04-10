@@ -45,8 +45,8 @@ sealed class MainScreen(
     @StringRes val nameResourceId: Int,
     val imageVector: ImageVector
 ) {
-    object AllWeathers : MainScreen("all_weather", R.string.app_name, Icons.Filled.LocationCity)
-    object CurrentLocation : MainScreen("current", R.string.app_name, Icons.Filled.MyLocation)
+    object AllWeathers : MainScreen("all_weather", R.string.all_cities, Icons.Filled.LocationCity)
+    object CurrentLocation : MainScreen("current", R.string.current, Icons.Filled.MyLocation)
     object Settings : MainScreen("settings", R.string.settings, Icons.Filled.Settings)
     object About : MainScreen("about", R.string.about, Icons.Filled.Info)
 }
@@ -54,7 +54,7 @@ sealed class MainScreen(
 @ExperimentalAnimationApi
 @Composable
 fun Main() {
-    val navController = rememberNavController();
+    val navController = rememberNavController()
 
     Scaffold(topBar = { MainTopBar(navController) },
         bottomBar = { MainBottomNavigation(navController) },
@@ -84,21 +84,23 @@ fun Main() {
 
 @Composable
 fun MainBottomNavigation(navController: NavHostController) {
-    BottomNavigation() {
+    val bottomBarItems = listOf(
+        MainScreen.AllWeathers,
+        MainScreen.CurrentLocation,
+        MainScreen.Settings
+    )
+
+    BottomNavigation {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
 
-        listOf(
-            MainScreen.AllWeathers,
-            MainScreen.CurrentLocation,
-            MainScreen.Settings
-        ).forEach { screen ->
+        bottomBarItems.forEach { screen ->
             BottomNavigationItem(
                 icon = { Icon(imageVector = screen.imageVector, contentDescription = "") },
                 label = { Text(text = stringResource(id = screen.nameResourceId)) },
                 selected = currentRoute == screen.route,
                 onClick = {
-                    navController.navigate(MainScreen.About.route)
+                    navController.navigate(screen.route)
                     {
                         popUpTo = navController.graph.startDestination
                         launchSingleTop = true
@@ -139,7 +141,7 @@ fun MainTopBar(navController: NavController) {
 
 @Composable
 fun MainTopBarMenuItems(navController: NavController, onItemClick: () -> Unit) {
-    Column() {
+    Column {
         DropdownMenuItem(onClick = {
             onItemClick()
 

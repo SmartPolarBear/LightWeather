@@ -1,5 +1,6 @@
 package com.smartpolarbear.lightweather.ui.settings
 
+import android.widget.Spinner
 import androidx.compose.animation.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -57,6 +58,34 @@ fun SwitchSettingItem(
     }
 }
 
+@Composable
+fun SpinnerBoxSettingItem(
+    title: String,
+    description: String?
+) {
+    Row(
+        modifier = Modifier
+            .clickable(onClick = {
+
+            })
+            .fillMaxWidth()
+            .padding(dimensionResource(id = R.dimen.small_padding)),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column() {
+            Text(text = title)
+            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                Text(text = description ?: "")
+            }
+        }
+        Box(contentAlignment = Alignment.CenterEnd)
+        {
+
+        }
+    }
+}
+
 /**
  * the main setting screen
  * @param navController navigation controller passed by MainActivity
@@ -80,6 +109,10 @@ fun SettingList() {
             SwitchSettingItem("Test", "This is a test", checked) {
                 checked = !checked
             }
+        }
+
+        item {
+            SpinnerBoxSettingItem("Unit","The unit used to describe weather")
         }
     }
 }
