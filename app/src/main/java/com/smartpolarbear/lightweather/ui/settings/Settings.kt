@@ -61,9 +61,11 @@ fun SwitchSettingItem(
 }
 
 @Composable
-fun SpinnerBoxSettingItem(
+fun <T> SpinnerBoxSettingItem(
     title: String,
-    description: String?
+    description: String?,
+    choices: List<T>,
+    onSelected: ((T) -> Unit)?
 ) {
     var expanded by remember {
         mutableStateOf(false)
@@ -95,9 +97,9 @@ fun SpinnerBoxSettingItem(
             RawSpinner(
                 expanded = expanded,
                 onExpandedChange = { toggleExpanded() },
-                choices = listOf("AAA", "BBB", "CCC"),
+                choices = choices,
                 onClick = { toggleExpanded() },
-                onSelect = { },
+                onSelect = onSelected,
                 edible = false
             )
         }
@@ -130,7 +132,10 @@ fun SettingList() {
         }
 
         item {
-            SpinnerBoxSettingItem("Unit", "The unit used to describe weather")
+            SpinnerBoxSettingItem("Unit",
+                "The unit used to describe weather",
+                listOf("A", "B"),
+                onSelected = {})
         }
     }
 }

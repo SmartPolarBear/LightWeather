@@ -9,4 +9,6 @@
     <string name="settings">Settings</string>
     <string name="current">Current</string>
     <string name="all_cities">All Cities</string>
+    <string name="metric">Metric</string>
+    <string name="imperial">Imperial</string>
 </resources>

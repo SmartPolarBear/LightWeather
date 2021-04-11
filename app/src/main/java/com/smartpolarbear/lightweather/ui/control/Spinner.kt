@@ -78,30 +78,30 @@ public fun <T> RawSpinner(
                         modifier = Modifier.padding(end = dimensionResource(id = R.dimen.small_padding))
                     )
                 }
-            }
 
-            DropdownMenu(expanded = expanded,
-                onDismissRequest = {
-                    if (onExpandedChange != null) {
-                        onExpandedChange(expanded)
-                    }
-                }) {
-                choices.forEach { choice ->
-                    DropdownMenuItem(onClick = {
-                        value = choice.toString()
-                        if (onSelect != null) {
-                            onSelect(choice)
-                        }
-
+                DropdownMenu(expanded = expanded,
+                    onDismissRequest = {
                         if (onExpandedChange != null) {
                             onExpandedChange(expanded)
                         }
                     }) {
-                        Text(
-                            text = choice.toString(),
-                            modifier = Modifier
-                                .wrapContentWidth()
-                        )
+                    choices.forEach { choice ->
+                        DropdownMenuItem(onClick = {
+                            value = choice.toString()
+                            if (onSelect != null) {
+                                onSelect(choice)
+                            }
+
+                            if (onExpandedChange != null) {
+                                onExpandedChange(expanded)
+                            }
+                        }) {
+                            Text(
+                                text = choice.toString(),
+                                modifier = Modifier
+                                    .wrapContentWidth()
+                            )
+                        }
                     }
                 }
             }
