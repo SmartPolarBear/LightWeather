@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import com.smartpolarbear.lightweather.R
 
 import com.smartpolarbear.lightweather.ui.animation.ScreenSwitchAnimation
+import com.smartpolarbear.lightweather.ui.control.Spinner
 
 /**
  * A switch setting item in the list
@@ -65,9 +66,6 @@ fun SpinnerBoxSettingItem(
 ) {
     Row(
         modifier = Modifier
-            .clickable(onClick = {
-
-            })
             .fillMaxWidth()
             .padding(dimensionResource(id = R.dimen.small_padding)),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -81,7 +79,7 @@ fun SpinnerBoxSettingItem(
         }
         Box(contentAlignment = Alignment.CenterEnd)
         {
-
+            Spinner(choices = listOf("AAA", "BBB", "CCC"))
         }
     }
 }
@@ -112,7 +110,7 @@ fun SettingList() {
         }
 
         item {
-            SpinnerBoxSettingItem("Unit","The unit used to describe weather")
+            SpinnerBoxSettingItem("Unit", "The unit used to describe weather")
         }
     }
 }
