@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import com.smartpolarbear.lightweather.R
 
 import com.smartpolarbear.lightweather.ui.animation.ScreenSwitchAnimation
+import com.smartpolarbear.lightweather.ui.control.RawSpinner
 import com.smartpolarbear.lightweather.ui.control.Spinner
 
 /**
@@ -64,10 +65,19 @@ fun SpinnerBoxSettingItem(
     title: String,
     description: String?
 ) {
+    var expanded by remember {
+        mutableStateOf(false)
+    }
+
+    val toggleExpanded = {
+        expanded = !expanded
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(dimensionResource(id = R.dimen.small_padding)),
+            .padding(dimensionResource(id = R.dimen.small_padding))
+            .clickable { toggleExpanded() },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -77,9 +87,19 @@ fun SpinnerBoxSettingItem(
                 Text(text = description ?: "")
             }
         }
-        Box(contentAlignment = Alignment.CenterEnd)
+        Box(
+            contentAlignment = Alignment.CenterEnd,
+            modifier = Modifier.wrapContentSize()
+        )
         {
-            Spinner(choices = listOf("AAA", "BBB", "CCC"))
+            RawSpinner(
+                expanded = expanded,
+                onExpandedChange = { toggleExpanded() },
+                choices = listOf("AAA", "BBB", "CCC"),
+                onClick = { toggleExpanded() },
+                onSelect = { },
+                edible = false
+            )
         }
     }
 }

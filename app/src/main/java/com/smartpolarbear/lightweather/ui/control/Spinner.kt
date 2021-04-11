@@ -1,6 +1,5 @@
 package com.smartpolarbear.lightweather.ui.control
 
-import android.widget.Spinner
 import androidx.compose.animation.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -22,23 +21,27 @@ import com.smartpolarbear.lightweather.ui.animation.ScreenSwitchAnimation
 import com.smartpolarbear.lightweather.ui.settings.SettingList
 import kotlin.math.exp
 
-
 @Composable
-public fun Spinner(
-    choices: List<String>,
+public fun <T> RawSpinner(
+    expanded: Boolean,
+    onExpandedChange: ((Boolean) -> Unit)?,
+    choices: List<T>,
+    onClick: (() -> Unit)?,
+    onSelect: ((T) -> Unit)? = {},
     edible: Boolean = false
 ) {
-    var expanded by remember {
-        mutableStateOf(false)
-    }
 
     var value by remember {
-        mutableStateOf(choices.first())
+        mutableStateOf(choices.first().toString())
     }
 
     Box {
         Row {
-            Box(modifier = Modifier.clickable { expanded = !expanded })
+            Box(modifier = Modifier.clickable {
+                if (onClick != null) {
+                    onClick()
+                }
+            })
             {
                 Row(
                     modifier = Modifier
@@ -50,10 +53,16 @@ public fun Spinner(
                     {
                         if (edible) {
                             TextField(
-                                value = value,
+                                value = value.toString(),
                                 onValueChange = { newVal ->
-                                    if (choices.contains(newVal)) {
-                                        value = newVal
+                                    val realChoice = choices.find { item ->
+                                        item.toString() == newVal
+                                    }
+                                    if (realChoice != null) {
+                                        value = newVal.toString()
+                                        if (onSelect != null) {
+                                            onSelect(realChoice)
+                                        }
                                     }
                                 },
                                 modifier = Modifier.fillMaxWidth()
@@ -72,14 +81,24 @@ public fun Spinner(
             }
 
             DropdownMenu(expanded = expanded,
-                onDismissRequest = { expanded = !expanded }) {
+                onDismissRequest = {
+                    if (onExpandedChange != null) {
+                        onExpandedChange(expanded)
+                    }
+                }) {
                 choices.forEach { choice ->
                     DropdownMenuItem(onClick = {
-                        value = choice
-                        expanded = !expanded
+                        value = choice.toString()
+                        if (onSelect != null) {
+                            onSelect(choice)
+                        }
+
+                        if (onExpandedChange != null) {
+                            onExpandedChange(expanded)
+                        }
                     }) {
                         Text(
-                            text = choice,
+                            text = choice.toString(),
                             modifier = Modifier
                                 .wrapContentWidth()
                         )
@@ -90,6 +109,29 @@ public fun Spinner(
     }
 }
 
+@Composable
+public fun <T> Spinner(
+    choices: List<T>,
+    onSelect: ((T) -> Unit)? = {},
+    edible: Boolean = false
+) {
+    var expanded by remember {
+        mutableStateOf(false)
+    }
+
+    Box(modifier = Modifier.wrapContentSize())
+    {
+        RawSpinner(
+            expanded = expanded,
+            onExpandedChange = { expanded = !expanded },
+            choices = choices,
+            onClick = { expanded = !expanded },
+            onSelect = onSelect,
+            edible = edible
+        )
+    }
+}
+
 @ExperimentalAnimationApi
 @Preview(showBackground = true)
 @Composable
@@ -97,6 +139,5 @@ fun DefaultPreview() {
     Box(modifier = Modifier.wrapContentWidth())
     {
         Spinner(choices = listOf("AAAAA", "BBBBB", "CCCCC"))
-
     }
 }
