@@ -3,36 +3,29 @@ package com.smartpolarbear.lightweather.ui.control
 import androidx.compose.animation.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.smartpolarbear.lightweather.R
-
-import com.smartpolarbear.lightweather.ui.animation.ScreenSwitchAnimation
-import com.smartpolarbear.lightweather.ui.settings.SettingList
-import kotlin.math.exp
 
 @Composable
 public fun <T> RawSpinner(
     expanded: Boolean,
     onExpandedChange: ((Boolean) -> Unit)?,
     choices: List<T>,
+    defaultChoice: T? = null,
     onClick: (() -> Unit)?,
     onSelect: ((T) -> Unit)? = {},
     edible: Boolean = false
 ) {
 
     var value by remember {
-        mutableStateOf(choices.first().toString())
+        mutableStateOf(defaultChoice ?: choices.first())
     }
 
     Box {
@@ -59,7 +52,7 @@ public fun <T> RawSpinner(
                                         item.toString() == newVal
                                     }
                                     if (realChoice != null) {
-                                        value = newVal.toString()
+                                        value = realChoice
                                         if (onSelect != null) {
                                             onSelect(realChoice)
                                         }
@@ -68,7 +61,7 @@ public fun <T> RawSpinner(
                                 modifier = Modifier.fillMaxWidth()
                             )
                         } else {
-                            Text(text = value)
+                            Text(text = value.toString())
                         }
                     }
 
@@ -87,7 +80,7 @@ public fun <T> RawSpinner(
                     }) {
                     choices.forEach { choice ->
                         DropdownMenuItem(onClick = {
-                            value = choice.toString()
+                            value = choice
                             if (onSelect != null) {
                                 onSelect(choice)
                             }
@@ -113,6 +106,7 @@ public fun <T> RawSpinner(
 public fun <T> Spinner(
     choices: List<T>,
     onSelect: ((T) -> Unit)? = {},
+    defaultChoice: T? = null,
     edible: Boolean = false
 ) {
     var expanded by remember {
@@ -125,6 +119,7 @@ public fun <T> Spinner(
             expanded = expanded,
             onExpandedChange = { expanded = !expanded },
             choices = choices,
+            defaultChoice = defaultChoice,
             onClick = { expanded = !expanded },
             onSelect = onSelect,
             edible = edible
@@ -138,6 +133,7 @@ public fun <T> Spinner(
 fun DefaultPreview() {
     Box(modifier = Modifier.wrapContentWidth())
     {
-        Spinner(choices = listOf("AAAAA", "BBBBB", "CCCCC"))
+        val items = listOf("AAAAA", "BBBBB", "CCCCC");
+        Spinner(choices = items, defaultChoice = items[2])
     }
 }

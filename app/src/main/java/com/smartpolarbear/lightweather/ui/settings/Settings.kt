@@ -1,6 +1,5 @@
 package com.smartpolarbear.lightweather.ui.settings
 
-import android.widget.Spinner
 import androidx.compose.animation.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,13 +9,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.smartpolarbear.lightweather.R
+import com.smartpolarbear.lightweather.settings.DisplayUnit
 
 import com.smartpolarbear.lightweather.ui.animation.ScreenSwitchAnimation
 import com.smartpolarbear.lightweather.ui.control.RawSpinner
-import com.smartpolarbear.lightweather.ui.control.Spinner
 
 /**
  * A switch setting item in the list
@@ -134,7 +134,10 @@ fun SettingList() {
         item {
             SpinnerBoxSettingItem("Unit",
                 "The unit used to describe weather",
-                listOf("A", "B"),
+                listOf(
+                    stringResource(id = DisplayUnit.METRIC.displayNameResId),
+                    stringResource(id = DisplayUnit.IMPERIAL.displayNameResId)
+                ),
                 onSelected = {})
         }
     }
