@@ -64,14 +64,25 @@ fun SwitchSettingItem(
     }
 }
 
+/**
+ * A setting item which has many choices to select from
+ * @param title The Title of the setting item
+ * @param description small description under the title
+ * @param choices choices to select from
+ * @param defaultChoice the default choice to be displayed at first
+ * @param onSelected called when select item changes
+ */
 @Composable
 fun <T> SpinnerBoxSettingItem(
     title: String,
     description: String?,
     choices: List<T>,
-    onSelected: ((T) -> Unit)?,
-    defaultChoice: T? = null
+    defaultChoice: T? = null,
+    onSelected: ((T) -> Unit)?
 ) {
+    if (defaultChoice != null && !choices.contains(defaultChoice)) {
+        throw InvalidParameterException()
+    }
 
     var expanded by remember {
         mutableStateOf(false)
