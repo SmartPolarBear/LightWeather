@@ -8,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,6 +18,9 @@ import com.smartpolarbear.lightweather.settings.DisplayUnit
 
 import com.smartpolarbear.lightweather.ui.animation.ScreenSwitchAnimation
 import com.smartpolarbear.lightweather.ui.control.RawSpinner
+import java.security.InvalidParameterException
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 /**
  * A switch setting item in the list
@@ -65,8 +69,10 @@ fun <T> SpinnerBoxSettingItem(
     title: String,
     description: String?,
     choices: List<T>,
-    onSelected: ((T) -> Unit)?
+    onSelected: ((T) -> Unit)?,
+    defaultChoice: T? = null
 ) {
+
     var expanded by remember {
         mutableStateOf(false)
     }
@@ -98,6 +104,7 @@ fun <T> SpinnerBoxSettingItem(
                 expanded = expanded,
                 onExpandedChange = { toggleExpanded() },
                 choices = choices,
+                defaultChoice = defaultChoice,
                 onClick = { toggleExpanded() },
                 onSelect = onSelected,
                 edible = false
@@ -123,6 +130,7 @@ public fun Settings(navController: NavController) {
  */
 @Composable
 fun SettingList() {
+
     LazyColumn(modifier = Modifier.fillMaxWidth()) {
         item {
             var checked by remember { mutableStateOf(false) }
@@ -132,13 +140,39 @@ fun SettingList() {
         }
 
         item {
-            SpinnerBoxSettingItem("Unit",
-                "The unit used to describe weather",
-                listOf(
+            class UnitChoice(val displayName: String, val theValue: DisplayUnit) {
+                override fun toString(): String {
+                    return displayName
+                }
+
+                val value: DisplayUnit
+                    get() {
+                        return theValue
+                    }
+            }
+
+            val context = LocalContext.current
+
+            SpinnerBoxSettingItem(title = "Unit",
+                description = "The unit used to describe weather",
+                choices = listOf(
                     stringResource(id = DisplayUnit.METRIC.displayNameResId),
-                    stringResource(id = DisplayUnit.IMPERIAL.displayNameResId)
+                    stringResource(id = DisplayUnit.IMPERIAL.displayNameResId),
                 ),
-                onSelected = {})
+                defaultChoice = stringResource(id = DisplayUnit.get(LocalContext.current).displayNameResId),
+                onSelected = { theUnit ->
+                    when (theUnit) {
+                        context.getString(DisplayUnit.METRIC.displayNameResId) -> DisplayUnit.METRIC.save(
+                            context
+                        )
+
+                        context.getString(DisplayUnit.IMPERIAL.displayNameResId) -> DisplayUnit.IMPERIAL.save(
+                            context
+                        )
+
+                        else -> throw InvalidParameterException()
+                    }
+                })
         }
     }
 }

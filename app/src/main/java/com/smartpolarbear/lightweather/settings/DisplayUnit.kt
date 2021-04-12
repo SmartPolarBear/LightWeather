@@ -10,7 +10,7 @@ import com.smartpolarbear.lightweather.R
  */
 enum class DisplayUnit(val id: Int, @StringRes val displayNameResId: Int) {
     METRIC(id = 1, displayNameResId = R.string.metric),
-    IMPERIAL(id = 1, displayNameResId = R.string.imperial);
+    IMPERIAL(id = 2, displayNameResId = R.string.imperial);
 
     fun save(context: Context) {
         val key = context.getString(R.string.display_unit_key)
@@ -28,7 +28,7 @@ enum class DisplayUnit(val id: Int, @StringRes val displayNameResId: Int) {
             val sharedPref = context.getSharedPreferences(key, Context.MODE_PRIVATE)
             val id = sharedPref.getInt(key, METRIC.id)
 
-            return DisplayUnit.values().find { it.id == id }!!
+            return values().find { it.id == id }!!
         }
     }
 }

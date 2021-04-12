@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.smartpolarbear.lightweather.R
 
 @Composable
-public fun <T> RawSpinner(
+fun <T> RawSpinner(
     expanded: Boolean,
     onExpandedChange: ((Boolean) -> Unit)?,
     choices: List<T>,
@@ -103,7 +103,7 @@ public fun <T> RawSpinner(
 }
 
 @Composable
-public fun <T> Spinner(
+fun <T> Spinner(
     choices: List<T>,
     onSelect: ((T) -> Unit)? = {},
     defaultChoice: T? = null,
@@ -133,7 +133,7 @@ public fun <T> Spinner(
 fun DefaultPreview() {
     Box(modifier = Modifier.wrapContentWidth())
     {
-        val items = listOf("AAAAA", "BBBBB", "CCCCC");
+        val items = listOf("AAAAA", "BBBBB", "CCCCC")
         Spinner(choices = items, defaultChoice = items[2])
     }
 }
