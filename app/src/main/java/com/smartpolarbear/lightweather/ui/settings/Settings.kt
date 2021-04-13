@@ -1,5 +1,6 @@
 package com.smartpolarbear.lightweather.ui.settings
 
+import android.content.Context
 import androidx.compose.animation.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -94,9 +95,11 @@ fun <T> SpinnerBoxSettingItem(
 
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(dimensionResource(id = R.dimen.small_padding))
-            .clickable { toggleExpanded() },
+            .clickable(onClick = {
+                toggleExpanded()
+            })
+            .fillMaxSize()
+            .padding(dimensionResource(id = R.dimen.small_padding)),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -108,7 +111,7 @@ fun <T> SpinnerBoxSettingItem(
         }
         Box(
             contentAlignment = Alignment.CenterEnd,
-            modifier = Modifier.wrapContentSize()
+
         )
         {
             RawSpinner(
@@ -144,23 +147,36 @@ fun SettingList() {
 
     LazyColumn(modifier = Modifier.fillMaxWidth()) {
         item {
-            var checked by remember { mutableStateOf(false) }
-            SwitchSettingItem("Test", "This is a test", checked) {
+            val context = LocalContext.current
+            val key = context.getString(R.string.fahrenheit_key)
+
+
+            val sharedPref =
+                context.getSharedPreferences(
+                    key,
+                    Context.MODE_PRIVATE
+                )
+
+            var checked by remember {
+                mutableStateOf(
+                    sharedPref.getBoolean(
+                        key,
+                        false
+                    )
+                )
+            }
+
+            SwitchSettingItem("Fahrenheit", "Use Fahrenheit instead of Celsius", checked) {
                 checked = !checked
+                with(sharedPref.edit())
+                {
+                    putBoolean(key, checked)
+                    apply()
+                }
             }
         }
 
         item {
-            class UnitChoice(val displayName: String, val theValue: DisplayUnit) {
-                override fun toString(): String {
-                    return displayName
-                }
-
-                val value: DisplayUnit
-                    get() {
-                        return theValue
-                    }
-            }
 
             val context = LocalContext.current
 
