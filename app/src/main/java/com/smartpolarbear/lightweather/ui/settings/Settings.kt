@@ -112,7 +112,7 @@ fun <T> SpinnerBoxSettingItem(
         Box(
             contentAlignment = Alignment.CenterEnd,
 
-        )
+            )
         {
             RawSpinner(
                 expanded = expanded,
@@ -166,7 +166,11 @@ fun SettingList() {
                 )
             }
 
-            SwitchSettingItem("Fahrenheit", "Use Fahrenheit instead of Celsius", checked) {
+            SwitchSettingItem(
+                stringResource(R.string.fahrenheit),
+                stringResource(R.string.setting_fahrenheit_item_description),
+                checked
+            ) {
                 checked = !checked
                 with(sharedPref.edit())
                 {
@@ -180,8 +184,8 @@ fun SettingList() {
 
             val context = LocalContext.current
 
-            SpinnerBoxSettingItem(title = "Unit",
-                description = "The unit used to describe weather",
+            SpinnerBoxSettingItem(title = stringResource(R.string.unit),
+                description = stringResource(R.string.setting_unit_item_description),
                 choices = listOf(
                     stringResource(id = DisplayUnit.METRIC.displayNameResId),
                     stringResource(id = DisplayUnit.IMPERIAL.displayNameResId),

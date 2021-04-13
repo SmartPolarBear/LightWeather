@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
+import com.smartpolarbear.lightweather.ui.current_city.CurrentLocation
 import com.smartpolarbear.lightweather.ui.settings.Settings
 
 class MainActivity : ComponentActivity() {
@@ -70,6 +71,7 @@ fun Main() {
             }
             composable(MainScreen.CurrentLocation.route)
             {
+                CurrentLocation(navController)
             }
             composable(MainScreen.Settings.route)
             {

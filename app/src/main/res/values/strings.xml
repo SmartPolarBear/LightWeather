@@ -11,4 +11,8 @@
     <string name="all_cities">All Cities</string>
     <string name="metric">Metric</string>
     <string name="imperial">Imperial</string>
+    <string name="unit">Unit</string>
+    <string name="setting_unit_item_description">The unit used to describe weather</string>
+    <string name="fahrenheit">Fahrenheit</string>
+    <string name="setting_fahrenheit_item_description">Use Fahrenheit instead of Celsius</string>
 </resources>
