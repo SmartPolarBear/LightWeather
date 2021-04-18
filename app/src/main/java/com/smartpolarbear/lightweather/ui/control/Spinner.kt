@@ -8,11 +8,22 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.LocalViewConfiguration
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.smartpolarbear.lightweather.R
 
+@ExperimentalComposeUiApi
 @Composable
 fun <T> RawSpinner(
     expanded: Boolean,
@@ -72,12 +83,16 @@ fun <T> RawSpinner(
                     )
                 }
 
-                DropdownMenu(expanded = expanded,
+
+                DropdownMenu(
+                    expanded = expanded,
+                    offset = DpOffset(0.dp, LocalView.current.measuredHeight.dp),
                     onDismissRequest = {
                         if (onExpandedChange != null) {
                             onExpandedChange(expanded)
                         }
-                    }) {
+                    },
+                ) {
                     choices.forEach { choice ->
                         DropdownMenuItem(onClick = {
                             value = choice
@@ -95,6 +110,7 @@ fun <T> RawSpinner(
                                     .wrapContentWidth()
                             )
                         }
+
                     }
                 }
             }
@@ -102,6 +118,7 @@ fun <T> RawSpinner(
     }
 }
 
+@ExperimentalComposeUiApi
 @Composable
 fun <T> Spinner(
     choices: List<T>,
@@ -127,6 +144,7 @@ fun <T> Spinner(
     }
 }
 
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Preview(showBackground = true)
 @Composable

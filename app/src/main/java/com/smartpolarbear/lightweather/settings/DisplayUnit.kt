@@ -22,6 +22,10 @@ enum class DisplayUnit(val id: Int, @StringRes val displayNameResId: Int) {
         }
     }
 
+    override fun toString(): String {
+        return if (id == METRIC.id) "m" else "i"
+    }
+
     companion object {
         fun get(context: Context): DisplayUnit {
             val key = context.getString(R.string.display_unit_key)

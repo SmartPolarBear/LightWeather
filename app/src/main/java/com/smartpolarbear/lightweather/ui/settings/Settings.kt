@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
@@ -73,6 +74,7 @@ fun SwitchSettingItem(
  * @param defaultChoice the default choice to be displayed at first
  * @param onSelected called when select item changes
  */
+@ExperimentalComposeUiApi
 @Composable
 fun <T> SpinnerBoxSettingItem(
     title: String,
@@ -131,6 +133,7 @@ fun <T> SpinnerBoxSettingItem(
  * the main setting screen
  * @param navController navigation controller passed by MainActivity
  */
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
 public fun Settings(navController: NavController) {
@@ -142,6 +145,7 @@ public fun Settings(navController: NavController) {
 /**
  * The main list of settings
  */
+@ExperimentalComposeUiApi
 @Composable
 fun SettingList() {
 
@@ -208,6 +212,7 @@ fun SettingList() {
     }
 }
 
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Preview(showBackground = true)
 @Composable

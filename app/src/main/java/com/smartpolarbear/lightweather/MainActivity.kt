@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.smartpolarbear.lightweather.ui.theme.LightWeatherTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -30,6 +31,7 @@ import com.smartpolarbear.lightweather.ui.settings.Settings
 
 class MainActivity : ComponentActivity() {
 
+    @ExperimentalComposeUiApi
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +54,7 @@ sealed class MainScreen(
     object About : MainScreen("about", R.string.about, Icons.Filled.Info)
 }
 
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
 fun Main() {
@@ -191,6 +194,7 @@ fun MainFloatingActionButton(navController: NavController) {
     }
 }
 
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Preview(showBackground = true)
 @Composable
