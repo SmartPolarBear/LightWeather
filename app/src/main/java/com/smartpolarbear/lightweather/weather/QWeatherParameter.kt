@@ -20,6 +20,19 @@ enum class Compression(val param: String) {
 }
 
 data class Location(val location: String, val type: LocationType) {
+    companion object {
+        fun fromLocationId(locationId: Int): Location {
+            return Location(locationId.toString(), LocationType.LOCATION_ID)
+        }
+
+        fun fromCoordinate(x: Double, y: Double): Location {
+            return Location(
+                "${String.format("%.2f", x)},${String.format("%.2f", y)}",
+                LocationType.COORDINATE
+            )
+        }
+    }
+
     override fun toString(): String {
         return location
     }

@@ -1,5 +1,6 @@
 package com.smartpolarbear.lightweather.weather
 
+import com.smartpolarbear.lightweather.settings.DisplayUnit
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
@@ -22,7 +23,12 @@ class QWeatherRetriever {
         service = retrofit.create(QWeatherService::class.java)
     }
 
-    suspend fun getNowWeather(): NowWeatherResponse {
-        return service.getNowWeather()
+    suspend fun getNowWeather(
+        location: Location,
+        lang: DisplayLanguages,
+        unit: DisplayUnit,
+        comp: Compression
+    ): NowWeatherResponse {
+        return service.getNowWeather(location, lang, unit, comp)
     }
 }
