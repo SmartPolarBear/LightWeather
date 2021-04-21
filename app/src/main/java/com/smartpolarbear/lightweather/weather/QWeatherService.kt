@@ -1,6 +1,8 @@
 package com.smartpolarbear.lightweather.weather
 
 import com.smartpolarbear.lightweather.settings.DisplayUnit
+import kotlinx.coroutines.Deferred
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -12,10 +14,10 @@ interface QWeatherService {
     }
 
     @GET("weather/now?key=${API_KEY}")
-    suspend fun getNowWeather(
+    suspend fun getNowWeatherAsync(
         @Query("location", encoded = true) location: Location,
         @Query("lang", encoded = true) lang: DisplayLanguages,
         @Query("unit", encoded = true) unit: DisplayUnit,
         @Query("gzip", encoded = true) comp: Compression
-    ): NowWeatherResponse
+    ): Deferred<Response<NowWeatherResponse>>
 }

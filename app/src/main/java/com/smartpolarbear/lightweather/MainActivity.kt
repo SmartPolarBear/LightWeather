@@ -26,8 +26,16 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
+import com.smartpolarbear.lightweather.settings.DisplayUnit
 import com.smartpolarbear.lightweather.ui.current_city.CurrentLocation
 import com.smartpolarbear.lightweather.ui.settings.Settings
+import com.smartpolarbear.lightweather.weather.Compression
+import com.smartpolarbear.lightweather.weather.DisplayLanguages
+import com.smartpolarbear.lightweather.weather.Location
+import com.smartpolarbear.lightweather.weather.QWeatherRetriever
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
@@ -35,6 +43,8 @@ class MainActivity : ComponentActivity() {
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         setContent {
             LightWeatherTheme {
                 Main()
