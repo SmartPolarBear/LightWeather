@@ -5,6 +5,8 @@ import com.smartpolarbear.lightweather.weather.Compression
 import com.smartpolarbear.lightweather.weather.DisplayLanguages
 import com.smartpolarbear.lightweather.weather.Location
 import com.smartpolarbear.lightweather.weather.QWeatherRetriever
+import junit.framework.Assert.assertEquals
+import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
@@ -24,5 +26,7 @@ class QWeatherRetrieverTest {
             unit = DisplayUnit.METRIC,
             comp = Compression.GZIP
         )
+
+        assertTrue(nowWeather.isSuccessful)
     }
 }
