@@ -16,7 +16,11 @@ enum class DisplayLanguages(val langCode: String) {
 
 enum class Compression(val param: String) {
     GZIP(param = "y"),
-    DISABLED(param = "n")
+    DISABLED(param = "n");
+
+    override fun toString(): String {
+        return param
+    }
 }
 
 data class Location(val location: String, val type: LocationType) {

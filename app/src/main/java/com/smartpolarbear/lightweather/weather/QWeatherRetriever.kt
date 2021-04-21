@@ -17,9 +17,7 @@ class QWeatherRetriever {
     }
 
     companion object {
-        private const val API_VAR = "v7"
-
-        const val BASE_URL = "https://devapi.qweather.com/${API_VAR}/"
+        const val BASE_URL = "https://devapi.qweather.com/"
     }
 
 

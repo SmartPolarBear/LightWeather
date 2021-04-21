@@ -11,10 +11,12 @@ interface QWeatherService {
 
     companion object {
         const val PUBLIC_ID = "HE2104041152321459"
+
+        const val API_VAR = "v7"
         const val API_KEY = "9c53b8293d174c06a5292082cc4ab68d"
     }
 
-    @GET("/weather/now?key=${API_KEY}")
+    @GET("${API_VAR}/weather/now?key=${API_KEY}")
     suspend fun getNowWeatherAsync(
         @Query("location", encoded = false) location: Location,
         @Query("lang", encoded = false) lang: DisplayLanguages,
