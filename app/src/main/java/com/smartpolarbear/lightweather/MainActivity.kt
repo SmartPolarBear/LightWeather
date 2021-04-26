@@ -1,5 +1,9 @@
 package com.smartpolarbear.lightweather
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -23,6 +27,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
@@ -50,6 +56,36 @@ class MainActivity : ComponentActivity() {
                 Main()
             }
         }
+    }
+
+    private fun getCurrentLocation(context: Context): android.location.Location {
+        val manager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        if (ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ),
+                2
+            )
+        }
+
+        var location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+        if (location == null) {
+            location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+        }
+
+        return location!!
     }
 }
 
