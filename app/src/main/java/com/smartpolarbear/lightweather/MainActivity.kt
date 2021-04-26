@@ -58,35 +58,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun getCurrentLocation(context: Context): android.location.Location {
-        val manager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-        if (ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ),
-                2
-            )
-        }
-
-        var location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-        if (location == null) {
-            location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-        }
-
-        return location!!
-    }
 }
 
 sealed class MainScreen(
