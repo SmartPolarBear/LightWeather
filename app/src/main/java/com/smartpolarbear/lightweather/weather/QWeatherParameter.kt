@@ -29,9 +29,9 @@ data class Location(val location: String, val type: LocationType) {
             return Location(locationId.toString(), LocationType.LOCATION_ID)
         }
 
-        fun fromCoordinate(x: Double, y: Double): Location {
+        fun fromCoordinate(longitude: Double, latitude: Double): Location {
             return Location(
-                "${String.format("%.2f", x)},${String.format("%.2f", y)}",
+                "${String.format("%.2f", longitude)},${String.format("%.2f", latitude)}",
                 LocationType.COORDINATE
             )
         }
